@@ -20,8 +20,13 @@ class App:
 
 		# create section for adding minutes
 		self.minutes_label = tk.Label(frame, text = "Add Minutes")
-		self.minutes_plus_btn = tk.Button(frame, text = "+", command = self.add_mins)
-		self.minutes_minus_btn = tk.Button(frame, text = "-", command = self.remove_mins)
+		self.minutes_plus_btn = tk.Button(frame, text = "+", command = lambda: self.change_time(60))
+		self.minutes_minus_btn = tk.Button(frame, text = "-", command = lambda: self.change_time(-60))
+
+		#create section for adding seconds
+		self.seconds_label = tk.Label(frame, text = "Add Seconds")
+		self.seconds_plus_btn = tk.Button(frame, text = "+", command = lambda: self.change_time(1))
+		self.seconds_minus_btn = tk.Button(frame, text = "-", command = lambda: self.change_time(-1))
 
 		# pack elements into the frame
 		self.title.pack()
@@ -34,6 +39,10 @@ class App:
 		self.minutes_label.pack()
 		self.minutes_plus_btn.pack()
 		self.minutes_minus_btn.pack()
+
+		self.seconds_label.pack()
+		self.seconds_plus_btn.pack()
+		self.seconds_minus_btn.pack()
 
 	def start_timer(self):
 		"""timer1 = Timer(timer_display["text"])
@@ -56,16 +65,16 @@ class App:
 		pass
 
 	def reset_timer(self):
-		pass
+		self.current_time = self.start_time
+		self.timer_display["text"] = self.sec_to_min(self.start_time)
 
-	def add_mins(self):
-		pass
+	def change_time(self, num):
+		self.current_time += num
+		if self.current_time < 0:
+			self.current_time = 0
+		self.timer_display["text"] = self.sec_to_min(self.current_time)
 
-	def remove_mins(self):
-		pass
-
-	@classmethod
-	def sec_to_min(cls, seconds):
+	def sec_to_min(self, seconds):
 		""" given input in seconds, returns equivalent value in minutes (0:00 string) """
 		calculation = divmod(seconds, 60)
 		if calculation[1] < 10:
@@ -74,8 +83,7 @@ class App:
 			output = str(calculation[1])
 		return str(calculation[0]) + ":" + output
 
-	@classmethod
-	def min_to_sec(cls, minutes):
+	def min_to_sec(self, minutes):
 		""" given input in 0:00 format, returns equivalent value in seconds """
 		vals = minutes.split(":")
 		return (int(vals[0]) * 60) + int(vals[1])		
