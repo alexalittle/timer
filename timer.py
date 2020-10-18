@@ -51,9 +51,11 @@ class App:
 		self.seconds_minus_btn.pack()
 
 	def update_display(self):
+		""" Updates the timer on the app display."""
 		self.timer_display["text"] = self.sec_to_min(self.current_time)
 
 	def start_timer(self):
+		""" Starts the timer."""
 		self.current_time -= 1
 		self.update_display()
 		if self.current_time > 0:
@@ -62,15 +64,19 @@ class App:
 			root.bell()
 
 	def stop_timer(self):
+		""" Stops the timer."""
 		if self.callback:
 			root.after_cancel(self.callback)
 
 	def reset_timer(self):
-		# this is a little buggy still
+		""" Stops the timer if running and resets it to the start time value."""
+		self.stop_timer()
 		self.current_time = self.start_time
 		self.update_display()
 
 	def clear_timer(self):
+		""" Stops the timer if running and resets all time values to 0."""
+		self.stop_timer()
 		self.current_time = 0
 		self.start_time = 0
 		self.update_display()
@@ -84,7 +90,7 @@ class App:
 		self.update_display()
 
 	def sec_to_min(self, seconds):
-		""" Given input in seconds, returns equivalent value in minutes (0:00 string). """
+		""" Given input in seconds, returns equivalent value in minutes (0:00 string)."""
 		calculation = divmod(seconds, 60)
 		if calculation[1] < 10:
 			output = "0" + str(calculation[1])
