@@ -98,11 +98,6 @@ class App:
 			output = str(calculation[1])
 		return str(calculation[0]) + ":" + output
 
-	def min_to_sec(self, minutes):
-		""" Given input in 0:00 format, returns equivalent value in seconds (int). """
-		vals = minutes.split(":")
-		return (int(vals[0]) * 60) + int(vals[1])		
-
 root = tk.Tk()
 app = App(root)
 
