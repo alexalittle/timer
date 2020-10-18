@@ -65,18 +65,20 @@ class App:
 
 	def start_timer(self):
 		""" Starts the timer."""
-		if self.start_time > 0:
+		if self.start_time > 0 and self.current_time >= 1:
 			self.current_time -= 1
 			self.update_display()
 			if self.current_time > 0:
 				self.callback = root.after(1000, lambda: self.start_timer())
 			else:
 				root.bell()
+				self.callback = None
 
 	def stop_timer(self):
 		""" Stops the timer."""
 		if self.callback:
 			root.after_cancel(self.callback)
+			self.callback = None
 
 	def reset_timer(self):
 		""" Stops the timer if running and resets it to the start time value."""
@@ -95,7 +97,9 @@ class App:
 		""" Given an input in seconds, adds that value to the current time. Prevents negative time values."""
 		if self.current_time + num >= 0:
 			self.current_time += num
-			self.start_time += num
+			# changes made while timer is already running won't affect saved "start time" value
+			if not self.callback:
+				self.start_time += num
 			self.update_display()
 
 	def sec_to_min(self, seconds):
