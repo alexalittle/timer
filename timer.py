@@ -26,7 +26,7 @@ class App:
 		control_frame.pack(side = tk.TOP)
 
 		# create start, stop, reset, clear buttons
-		self.start_btn = tk.Button(control_frame, text="Start", command = self.start_timer)
+		self.start_btn = tk.Button(control_frame, text="Start", command = self.start_handler)
 		self.start_btn.pack(side = tk.LEFT)
 		self.stop_btn = tk.Button(control_frame, text="Stop", command = self.stop_timer)
 		self.stop_btn.pack(side = tk.LEFT)
@@ -62,6 +62,11 @@ class App:
 	def update_display(self):
 		""" Updates the timer on the app display."""
 		self.timer_display["text"] = self.sec_to_min(self.current_time)
+
+	def start_handler(self):
+		""" Helper function to prevent the user from triggering "Start" more than once """
+		if not self.callback:
+			self.start_timer()
 
 	def start_timer(self):
 		""" Starts the timer."""
